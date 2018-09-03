@@ -2,6 +2,8 @@ Require Import Coq.Lists.List.
 
 Import ListNotations.
 
+Set Implicit Arguments.
+
 (** Generic search trees (tries) over a list of any type with decidable equality.
   *)
 Section Trie.
@@ -12,13 +14,13 @@ Section Trie.
     *)
   Variable K : Type.
 
-  (** In order to retrieve values from the trie, the key portion type must have decidable equality.
-    *)
-  Hypothesis Keq_dec : forall x y : K, {x = y} + {x <> y}.
-
   (** The type of values in the trie.
     *)
   Variable V : Type.
+
+  (** In order to retrieve values from the trie, the key portion type must have decidable equality.
+    *)
+  Hypothesis Keq_dec : forall x y : K, {x = y} + {x <> y}.
 
   (** Represents a trie.
     *)
