@@ -1,7 +1,3 @@
-Require Import Coq.Arith.Arith.
-Require Import Coq.QArith.QArith.
-Require Import Coq.Strings.Ascii.
-Require Import Coq.Strings.String.
 Require Import Coq.Lists.List.
 
 Import ListNotations.
@@ -134,65 +130,5 @@ Section Trie.
       | None => Node v' k' ((trie_insert (Node None k []) ks' v) :: c)
       end
     end.
-
-(* TODO: From here on. *)
-
-(** Creates a trie from the given list of strings and starting structure.
-  *   1. Let `dict` be some list of strings
-  *   2. Let `trie` be some trie
-  *)
-Fixpoint create_trie_rec (dict : list string) (trie : Trie) : Trie :=
-  match dict with
-  | word :: dict' => create_trie_rec dict' (trie_insert trie word 0)
-  | [] => trie
-  end.
-
-(** Creates a trie from the given list of strings.
-  *   1. Let `dict` be some list of strings
-  *)
-Definition create_trie (dict : list string) : Trie :=
-  create_trie_rec dict empty_trie.
-
-(** Creates a lookup trie from a list of pairs of strings and rational numbers
-  * and a starting structure.
-  *   1. Let `dict` be some list of pairs of strings and rational numbers
-  *   2. Let `trie` be some starting trie
-  *)
-Fixpoint create_lookup_trie_rec (dict : list (string * Q)%type) (trie : Trie)
-  : Trie :=
-  match dict with
-  | word :: dict' =>
-    match word with
-    | (s, q) =>
-      create_lookup_trie_rec dict' (trie_insert trie s q)
-    end
-  | [] => trie
-  end.
-
-(** Creates a lookup trie from a list of pairs of strings and rational numbers.
-  *   1. Let `dict` be some list of pairs of strings and rational numbers
-  *)
-Definition create_lookup_trie (dict : list (string * Q)%type) : Trie :=
-  create_lookup_trie_rec dict empty_trie.
-
-(** Removes all duplicates from a list of strings using a given trie.
-  * 1. Let `dict` be some list of strings
-  * 2. Let `trie` be some trie containing words to remove
-  *)
-Fixpoint deduplicate_rec (dict : list string) (trie : Trie) : list string :=
-  match dict with
-  | word :: dict' =>
-    if trie_contains trie word then
-      deduplicate_rec dict' trie
-    else
-      word :: (deduplicate_rec dict' (trie_insert trie word 0))
-  | [] => []
-  end.
-
-(** Removes all duplicates from a list of strings using a new.
-  * 1. Let `dict` be some list of strings
-  *)
-Definition deduplicate (dict : list string) : list string :=
-  deduplicate_rec dict empty_trie.
 
 End Trie.
