@@ -38,7 +38,7 @@ Section Trie.
   Definition is_sought_trie (t : Trie) (k : K) : bool :=
     match t with
     | Root _ _ => false
-    | Node _ k' _ => 
+    | Node _ k' _ =>
         match Keq_dec k k' with
         | left _ => true
         | right _ => false
